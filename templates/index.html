@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    {% if nome_completo %}
+        <h1>Olá, {{ nome_completo }}!</h1>
+        <p>A sua Instituição de ensino é {{ instituicao }}</p>
+        <p>Está cursando a disciplina de {{ disciplina }}</p>
+    {% endif %}
+</div>
+
+<p>O IP do computador remoto é: {{ user_ip }}</p>
+<p>O host da aplicação é: {{ host }}</p>
+
+<hr>
+
+{{ wtf.quick_form(form) }}
+
+<br>
+
+<p>The local date and time is {{ moment(current_time).format('LLLL') }}.</p>
+<p>That was {{ moment(current_time).fromNow(refresh=True) }}.</p>
+
+{% endblock %}
+
+
