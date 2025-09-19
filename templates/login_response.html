@@ -6,7 +6,7 @@
     <h1>Dados do acesso</h1>
 </div>
 <div>
-    {# Verificamos se o e-mail existe na sessão antes de o exibir #}
+    {# Verifica se o e-mail existe na sessão antes de o exibir #}
     {% if email %}
         <p>Você está acessando o sistema por meio do usuário {{ email }}</p>
     {% else %}
@@ -19,3 +19,4 @@
 <p>The local date and time is {{ moment(current_time).format('LLLL') }}.</p>
 <p>That was {{ moment(current_time).fromNow(refresh=True) }}.</p>
 {% endblock %}
+
