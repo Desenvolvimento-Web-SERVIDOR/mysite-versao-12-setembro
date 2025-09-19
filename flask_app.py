@@ -2,10 +2,8 @@ from flask import Flask, render_template, session, redirect, url_for, flash, req
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
-# Adicione PasswordField e EmailField aos imports
 from wtforms import StringField, SelectField, SubmitField, PasswordField
-from wtforms.validators import DataRequired, Email
-
+from wtforms.validators import DataRequired
 from datetime import datetime
 
 app = Flask(__name__)
@@ -26,12 +24,11 @@ class NameForm(FlaskForm):
     ])
     submit = SubmitField('Submit')
 
-# NOVA CLASSE: Formulário para a página de login
+# Formulário para a página de login
 class LoginForm(FlaskForm):
     email = StringField('Usuário ou e-mail', validators=[DataRequired()])
     password = PasswordField('Informe a sua senha', validators=[DataRequired()])
     submit = SubmitField('Enviar')
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -62,12 +59,19 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # Lógica de login (será implementada no futuro)
-        # Por agora, apenas damos um feedback
-        flash('Login solicitado para o utilizador {}!'.format(form.email.data))
-        return redirect(url_for('index'))
+        # ATUALIZAÇÃO: Guardamos o e-mail na sessão
+        session['email_login'] = form.email.data
+        # ATUALIZAÇÃO: Redirecionamos para a nova página de resposta
+        return redirect(url_for('login_response'))
     return render_template('login.html', form=form)
 
+# NOVA ROTA para exibir a resposta do login
+@app.route('/loginResponse')
+def login_response():
+    # Pegamos o e-mail que guardámos na sessão
+    email = session.get('email_login')
+    # Renderizamos o novo template, passando o e-mail para ele
+    return render_template('login_response.html', email=email, current_time=datetime.utcnow())
 
 @app.errorhandler(404)
 def page_not_found(e):
